@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import React from "react";
 import { Link } from "react-router-dom";
 
-=======
-import { Link } from "react-router-dom";
->>>>>>> c81dbc8 (working)
 export default function Header() {
   return (
       <header className="p-4 flex justify-between">
