@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function LoginPage(){
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
   async function handleLoginSubmit(ev){
     ev.preventDefault();
     try {
-      axios.post('/login',{email,password});
+      await axios.post('/login',{email,password});
       alert("Login Successful");
     }
     catch (e){
@@ -22,8 +22,8 @@ export default function LoginPage(){
         <form className="max-w-md mx-auto" onSubmit={handleLoginSubmit}>
           <input type="email" 
           placeholder="your@email.com" 
-          value={email} 
-          onChange={ev => setEmail(ev.target.value)} />
+          value = {email} 
+          onChange ={ev => setEmail(ev.target.value)} />
           <input type="password" 
           placeholder="password" 
           value={password} 
