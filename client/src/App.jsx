@@ -7,7 +7,10 @@ import IndexPage from './pages/IndexPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import Layout from './Layout.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
+import axios, { Axios } from 'axios';
 
+axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.withCredentials = true; 
 function App() {
   return (
       <Routes>
