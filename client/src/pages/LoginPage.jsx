@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../UserContext"; // Adjust the path according to your project structure
+import { UserContext } from "../UserContext.jsx"; // Adjust the path according to your project structure
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
