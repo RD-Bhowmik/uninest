@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import React from "react";
-import Header from "../Header";
 
-export default function IndexPage() {
+import { Link } from "react-router-dom";
+
+import Header from "../Header";
+import React from "react";
+export default function IndexPage() { 
   return (
-    <div>
-      index page here
-    </div>
-  );
+    // <Header/
+    "this is just a text" 
+  );  
 }
