@@ -11,15 +11,15 @@ export default function LoginPage(){
     const {setUser} = useContext(UserContext);
 
     async function handleLoginSubmit(ev){
-     ev.preventDefault();
-     try {
+    ev.preventDefault();
+    try {
         const {data} = await axios.post('/login', {email, password});
         setUser(data);
         alert('Login Successfull');
         setRedirect(true);
-     } catch (e) {
-        alert ('Login Failed');
-     }
+    } catch (e) {
+        alert ('Login has Failed');
+    }
     
     }
     if (redirect) {
@@ -47,4 +47,5 @@ export default function LoginPage(){
             </div>
             </div>
     );
+    
 }
