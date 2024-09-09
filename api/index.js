@@ -87,8 +87,7 @@ app.post('/logout', (req, res) =>{
     res.cookie('token', '').json(true);
 });
 
-// Only works with http links unfortunately :(( , thik krte parle janais
-// console.log({__dirname});
+
 app.post('/upload-by-link', async (req, res) => {
     const {link} = req.body;
     const  newName = 'photo' + Date.now() + '.jpg' ;
@@ -122,11 +121,20 @@ app.post('places', (req, res) => {
         if (err) throw err; 
         const placeDoc = await Place.create({
             owner:userData.id,
-            title, address, addedPhotos, description,
+            title, address, photos:addedPhotos, description,
         extraInfo, checkIn, checkOut,
         });
         res.json(placeDoc);
     
     });
 });
+
+app.get('/places',(req,res) =>{
+    const{token} = req.cookies; 
+    jwt.verify(token, jwtSecret, {} , async(err,userData) =>{
+        const{id} = userData;
+        res.json(await Place.find({owner:id}));
+    });
+});
+
 app.listen(4000);
