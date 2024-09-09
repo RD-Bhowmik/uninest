@@ -3,12 +3,12 @@ const cors = require('cors');
 const { default: mongoose } = require('mongoose');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const UserModel = require('./models/User');
+const UserModel = require('./models/User.js');
 const cookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
 const multer = require("multer"); 
 const fs = require("fs");
-
+const Place = require('./models/Place.js')
 
 require('dotenv').config();
 const app = express();
@@ -88,7 +88,7 @@ app.post('/logout', (req, res) =>{
 });
 
 // Only works with http links unfortunately :(( , thik krte parle janais
-console.log({__dirname});
+// console.log({__dirname});
 app.post('/upload-by-link', async (req, res) => {
     const {link} = req.body;
     const  newName = 'photo' + Date.now() + '.jpg' ;
@@ -99,8 +99,8 @@ app.post('/upload-by-link', async (req, res) => {
     res.json(newName);
 });
 
-const photosMiddleware = multer({dest:"uploads/"});
-app.post("/upload",photosMiddleware.array("photos",100) ,(req,res) =>{
+const photosMiddleware = multer({dest:'uploads/'});
+app.post('/upload',photosMiddleware.array('photos',100) ,(req,res) =>{
     const uploadedFiles = [];
     for (let i=0; i<req.files.length; i++){
         const {path,originalname} = req.files[i];
@@ -113,4 +113,20 @@ app.post("/upload",photosMiddleware.array("photos",100) ,(req,res) =>{
     res.json(uploadedFiles);
 });
 
+app.post('places', (req, res) => {
+    const {token} = req.cookies;
+    const {title, address, addedPhotos, description,
+        extraInfo, checkIn, checkOut, maxGeust,
+    } = req.body();
+    jwt.verify(token, jwtSecret, {}, async(err, userData)=> {
+        if (err) throw err; 
+        const placeDoc = await Place.create({
+            owner:userData.id,
+            title, address, addedPhotos, description,
+        extraInfo, checkIn, checkOut,
+        });
+        res.json(placeDoc);
+    
+    });
+});
 app.listen(4000);
