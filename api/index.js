@@ -115,14 +115,14 @@ app.post('/upload',photosMiddleware.array('photos',100) ,(req,res) =>{
 app.post('places', (req, res) => {
     const {token} = req.cookies;
     const {title, address, addedPhotos, description,
-        extraInfo, checkIn, checkOut, maxGeust,
+        extraInfo, checkIn, checkOut, maxGuests,
     } = req.body();
     jwt.verify(token, jwtSecret, {}, async(err, userData)=> {
         if (err) throw err; 
         const placeDoc = await Place.create({
             owner:userData.id,
             title, address, photos:addedPhotos, description,
-        extraInfo, checkIn, checkOut,
+        extraInfo, checkIn, checkOut,maxGuests,
         });
         res.json(placeDoc);
     

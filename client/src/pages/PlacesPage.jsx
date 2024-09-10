@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import PlacesFormPage from "./PlacesFormPage";
 import AccountNav from "../AccountNav";
+import PhotosUploader from "../PhotosUploader";
 
 export default function PlacesPage() {
     const {action} = useParams();
