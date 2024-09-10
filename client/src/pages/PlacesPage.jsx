@@ -6,12 +6,12 @@ import AccountNav from "../AccountNav";
 import PhotosUploader from "../PhotosUploader";
 
 export default function PlacesPage() {
-    const {action} = useParams();
-    useEffect(() =>{
-        axios.get('/places').then((data) =>{
-            setRedirectPlacesList(data);
-        });
-    }, []);
+    // const {action} = useParams();
+    // useEffect(() =>{
+    //     axios.get('/places').then((data) =>{
+    //         setRedirectPlacesList(data);
+    //     });
+    // }, []);
     
     // const { action } = useParams();
     // const [redirectPlacesList, setRedirectPlacesList] = useState(false);
