@@ -34,7 +34,7 @@ export default function ProfilePage(){
     }
     return (
         <div>
-            <AccountNav/>
+            <AccountNav/> 
             {subpage === 'profile' && (
                 <div className="text-center max-w-lg mx-auto mt-2"> 
                 Logged in as {user.name} ({user.email}) 

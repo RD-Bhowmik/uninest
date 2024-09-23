@@ -1,5 +1,5 @@
 import { Link, Navigate } from "react-router-dom";
-import Header from "../Header";
+// import Header from "../Header";
 import { useContext, useState } from "react";
 import axios from "axios";
 import { UserContext } from "../UserContext";
@@ -18,7 +18,7 @@ export default function LoginPage(){
         alert('Login Successfull');
         setRedirect(true);
     } catch (e) {
-        alert ('Login has Failed');
+        alert ('Login Failed');
     }
     
     }
@@ -40,12 +40,10 @@ export default function LoginPage(){
                     onChange={ev => setPassword(ev.target.value)}/>
                 <button className="primary">Login</button>
                     <div className="text-center py-2 text-gray-500">
-                        Don't Have an Account Yet??    
-                        <Link className="underline" to={"/register"} >Register Now</Link>
+                        Do not Have an Account Yet? <Link className="underline" to={"/register"} >Register Now</Link>
                     </div>
             </form>
             </div>
             </div>
     );
-    
 }
