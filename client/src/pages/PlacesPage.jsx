@@ -12,7 +12,7 @@ export default function PlacesPage() {
             setPlaces(data); // Update state correctly
         });
     }, []);
-  
+
     return (
         <div>
             <AccountNav/>
