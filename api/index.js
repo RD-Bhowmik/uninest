@@ -18,7 +18,7 @@ const saltRounds = 12;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors({
     credentials: true,
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173']
@@ -142,7 +142,7 @@ app.get('/user-places', (req, res) => {
 
 // Get a specific place
 app.get('/places/:id', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; 
     res.json(await Place.findById(id));
 });
 
@@ -152,7 +152,7 @@ app.put('/places', (req, res) => {
     const {
         id, title, address, addedPhotos, description,
         perks, extraInfo, checkIn, checkOut, maxGuests, price,
-    } = req.body;
+    } = req.body; 
 
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
