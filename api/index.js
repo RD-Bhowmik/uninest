@@ -8,12 +8,14 @@ const cookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
-const path = require('path'); // Ensure path is included
-const Place = require('./models/Place.js');
+const path = require('path');
+const Place = require('./models/Place');
+const Booking = require('./models/Booking');
+
 require('dotenv').config();
 
 const app = express();
-const jwtSecret = 'fsadfasfnxcv234';  // Use this consistently
+const jwtSecret = 'fsadfasfnxcv234';
 const saltRounds = 12;
 
 app.use(express.json());
@@ -32,6 +34,18 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((err) => {
         console.error('MongoDB connection error:', err);
     });
+
+function getUserDataFromReq(req) {
+    return new Promise((resolve, reject) => {
+        jwt.verify(req.cookies.token, jwtSecret, {}, (err, userData) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(userData);
+            }
+        });
+    });
+}
 
 // API Routes
 
@@ -71,9 +85,11 @@ app.get('/profile', (req, res) => {
     const { token } = req.cookies;
     if (token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-            if (err) throw err;
-            const user = await UserModel.findById(userData.id);
-            res.json(user);
+            if (err) {
+                return res.status(401).json('Invalid token');
+            }
+            const { name, email, _id } = await UserModel.findById(userData.id);
+            res.json({ name, email, _id });
         });
     } else {
         res.json(null);
@@ -142,7 +158,7 @@ app.get('/user-places', (req, res) => {
 
 // Get a specific place
 app.get('/places/:id', async (req, res) => {
-    const { id } = req.params; 
+    const { id } = req.params;
     res.json(await Place.findById(id));
 });
 
@@ -152,7 +168,7 @@ app.put('/places', (req, res) => {
     const {
         id, title, address, addedPhotos, description,
         perks, extraInfo, checkIn, checkOut, maxGuests, price,
-    } = req.body; 
+    } = req.body;
 
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
@@ -173,6 +189,36 @@ app.put('/places', (req, res) => {
 // Get all places
 app.get('/places', async (req, res) => {
     res.json(await Place.find());
+});
+
+app.post('/bookings', async (req, res) => {
+    try {
+        const userData = await getUserDataFromReq(req);
+        const { place, checkIn, checkOut, numberOfGuests, name, phone, price } = req.body;
+        const booking = await Booking.create({
+            place, checkIn, checkOut, numberOfGuests, name, phone, price,
+            user: userData.id,
+        });
+        res.json(booking);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/bookings', async (req, res) => {
+    try {
+        const userData = await getUserDataFromReq(req);
+        const bookings = await Booking.find({ user: userData.id}).populate("place");
+        res.json(bookings);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// General error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
 });
 
 // Server and database connection
